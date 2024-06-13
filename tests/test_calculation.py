@@ -1,30 +1,54 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
+from decimal import Decimal
 import pytest
 
 from calculator.calculation import Calculation
-from calculator.operations import add
+from calculator.operations import add, subtract, multiply, divide
 from calculator import Calculator
 
 ### init.py test
 def test_addition():
-    calculation = Calculation(5, 5, add)
-    assert calculation.get_result() == 10
+    calculation = Calculation(Decimal('5'), Decimal('5'), add)
+    assert calculation.get_result() == Decimal('10')
 
 
 ## calculation.py test
-def test_calculator_add():
+@pytest.mark.parametrize("a, b, operation, expected", [
+    (Decimal('10'), Decimal('5'), add, Decimal('15')),
+    (Decimal('10'), Decimal('5'), subtract, Decimal('5')),
+    (Decimal('10'), Decimal('5'), multiply, Decimal('50')),
+    (Decimal('10'), Decimal('2'), divide, Decimal('5')),
+    (Decimal('10.5'), Decimal('0.5'), add, Decimal('11.0')),
+    (Decimal('10.5'), Decimal('0.5'), subtract, Decimal('10.0')),
+    (Decimal('10.5'), Decimal('2'), multiply, Decimal('21.0')),
+    (Decimal('10'), Decimal('0.5'), divide, Decimal('20')),
+])
+def test_calculator_operations(a, b, operation, expected):
     Calculator.clear_history()
-    Calculator.get_history()
-    assert Calculator.add(5, 5) == 10
+    calculation = Calculation(a, b, operation)
+    result = calculation.get_result()
+    assert result == expected
 
-def test_calculator_subtract():
-    assert Calculator.subtract(5, 5) == 0
-
-def test_calculator_multiply():
-    assert Calculator.multiply(5, 5) == 25
-
-def test_calculator_divide():
-    assert Calculator.divide(5, 5) == 1
 
 def test_calculator_divideby0():
     with pytest.raises(ValueError, match="Can't divide by 0"):
-        Calculator.divide(5, 0)
+        Calculator.divide(Decimal('5'), Decimal('0'))
+
+
+## history test
+def test_history(): ## looked up
+    Calculator.clear_history()
+    Calculator.add(1, 1)
+    Calculator.subtract(5, 2)
+    history = Calculator.get_history()
+    assert len(history) == 2
+    assert isinstance(history[0], Calculation)
+    assert isinstance(history[1], Calculation)
+    assert history[0].get_result() == 2
+    assert history[1].get_result() == 3
+
+def test_clear_history():
+    Calculator.clear_history()
+    Calculator.add(1, 1)
+    Calculator.clear_history()
+    assert len(Calculator.history) == 0
