@@ -2,14 +2,21 @@
 from decimal import Decimal
 import pytest
 
+from faker import Faker
+
 from calculator.calculation import Calculation
 from calculator.operations import add, subtract, multiply, divide
 from calculator import Calculator
 
+
+fake = Faker()
+
 ### init.py test
 def test_addition():
-    calculation = Calculation(Decimal('5'), Decimal('5'), add)
-    assert calculation.get_result() == Decimal('10')
+    a = fake.random_int()
+    b = fake.random_int()
+    calculation = Calculation(Decimal(a), Decimal(b), add)
+    assert calculation.get_result() == a + b
 
 
 ## calculation.py test
