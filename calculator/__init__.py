@@ -1,3 +1,4 @@
+from decimal import Decimal
 from calculator.operations import add, subtract, multiply, divide
 from calculator.calculation import Calculation
     
@@ -5,25 +6,25 @@ class Calculator:
     history = []
 
     @staticmethod
-    def add(a, b):
+    def add(a: Decimal, b: Decimal) -> Decimal:
         calculation = Calculation(a, b, add)
         Calculator.history.append(calculation)
         return calculation.get_result()
 
     @staticmethod
-    def subtract(a, b):
+    def subtract(a: Decimal, b: Decimal) -> Decimal:
         calculation = Calculation(a, b, subtract)
         Calculator.history.append(calculation)
         return calculation.get_result()
     
     @staticmethod
-    def multiply(a, b):
+    def multiply(a: Decimal, b: Decimal) -> Decimal:
         calculation = Calculation(a, b, multiply)
         Calculator.history.append(calculation)
         return calculation.get_result()
     
     @staticmethod
-    def divide(a, b):
+    def divide(a: Decimal, b: Decimal) -> Decimal:
         calculation = Calculation(a, b, divide)
         Calculator.history.append(calculation)
         return calculation.get_result()
