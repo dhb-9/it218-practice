@@ -2,9 +2,13 @@
 from decimal import Decimal
 import pytest
 
+from faker import Faker # type: ignore
+
 from calculator.calculation import Calculation
 from calculator.operations import add, subtract, multiply, divide
 from calculator import Calculator
+
+fake = Faker()
 
 ### init.py test
 def test_addition():
@@ -52,3 +56,11 @@ def test_clear_history():
     Calculator.add(1, 1)
     Calculator.clear_history()
     assert len(Calculator.history) == 0
+
+
+## faker imported
+def test_fake_addition():
+    a = fake.random_int()
+    b = fake.random_int()
+    calculation = Calculation(Decimal(a), Decimal(b), add)
+    assert calculation.get_result() == a + b
