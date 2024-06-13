@@ -1,6 +1,7 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
 from decimal import Decimal
-from calculator import Calculator
 
+from calculator import Calculator
 
 def test_add():
     Calculator.clear_history()

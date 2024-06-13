@@ -1,3 +1,4 @@
+# pylint: disable=missing-module-docstring, missing-function-docstring
 from decimal import Decimal
 import pytest
 
@@ -8,7 +9,7 @@ from calculator import Calculator
 ### init.py test
 def test_addition():
     calculation = Calculation(Decimal('5'), Decimal('5'), add)
-    assert calculation.get_result() == Decimal('10') 
+    assert calculation.get_result() == Decimal('10')
 
 
 ## calculation.py test
@@ -48,6 +49,6 @@ def test_history(): ## looked up
 
 def test_clear_history():
     Calculator.clear_history()
-    Calculator.add(1, 1) == 2
+    Calculator.add(1, 1)
     Calculator.clear_history()
     assert len(Calculator.history) == 0
