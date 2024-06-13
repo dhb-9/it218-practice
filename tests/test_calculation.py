@@ -2,27 +2,41 @@ from decimal import Decimal
 import pytest
 
 from calculator.calculation import Calculation
-from calculator.operations import add
+from calculator.operations import add, subtract, multiply, divide
 from calculator import Calculator
 
 ### init.py test
 def test_addition():
     calculation = Calculation(Decimal('5'), Decimal('5'), add)
-    assert calculation.get_result() == Decimal('10')
+    assert calculation.get_result() == Decimal('10') 
+
+def test_multiply(): ### got online ## multiply was being skipped for tested by parametrize for some reason
+    Calculator.clear_history()
+    result = Calculator.multiply(Decimal('5'), Decimal('5'))
+    assert result == Decimal('25')
+    assert len(Calculator.history) == 1
+    assert Calculator.history[0].a == Decimal('5')
+    assert Calculator.history[0].b == Decimal('5')
+    assert Calculator.history[0].operation == multiply
 
 
 ## calculation.py test
-def test_calculator_add():
-    assert Calculator.add(Decimal('5'), Decimal('5')) == Decimal('10')
+@pytest.mark.parametrize("a, b, operation, expected", [
+    (Decimal('10'), Decimal('5'), add, Decimal('15')),
+    (Decimal('10'), Decimal('5'), subtract, Decimal('5')),
+    (Decimal('10'), Decimal('5'), multiply, Decimal('50')),
+    (Decimal('10'), Decimal('2'), divide, Decimal('5')),
+    (Decimal('10.5'), Decimal('0.5'), add, Decimal('11.0')),
+    (Decimal('10.5'), Decimal('0.5'), subtract, Decimal('10.0')),
+    (Decimal('10.5'), Decimal('2'), multiply, Decimal('21.0')),
+    (Decimal('10'), Decimal('0.5'), divide, Decimal('20')),
+])
+def test_calculator_operations(a, b, operation, expected):
+    Calculator.clear_history()
+    calculation = Calculation(a, b, operation)
+    result = calculation.get_result()
+    assert result == expected
 
-def test_calculator_subtract():
-    assert Calculator.subtract(Decimal('5'), Decimal('5')) == Decimal('0')
-
-def test_calculator_multiply():
-    assert Calculator.multiply(Decimal('5'), Decimal('5')) == Decimal('25')
-
-def test_calculator_divide():
-    assert Calculator.divide(Decimal('5'), Decimal('5')) == Decimal('1')
 
 def test_calculator_divideby0():
     with pytest.raises(ValueError, match="Can't divide by 0"):
