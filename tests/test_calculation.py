@@ -10,15 +10,6 @@ def test_addition():
     calculation = Calculation(Decimal('5'), Decimal('5'), add)
     assert calculation.get_result() == Decimal('10') 
 
-def test_multiply(): ### got online ## multiply was being skipped for tested by parametrize for some reason
-    Calculator.clear_history()
-    result = Calculator.multiply(Decimal('5'), Decimal('5'))
-    assert result == Decimal('25')
-    assert len(Calculator.history) == 1
-    assert Calculator.history[0].a == Decimal('5')
-    assert Calculator.history[0].b == Decimal('5')
-    assert Calculator.history[0].operation == multiply
-
 
 ## calculation.py test
 @pytest.mark.parametrize("a, b, operation, expected", [
