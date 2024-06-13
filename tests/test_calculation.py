@@ -12,6 +12,8 @@ def test_addition():
 
 ## calculation.py test
 def test_calculator_add():
+    Calculator.clear_history()
+    Calculator.get_history()
     assert Calculator.add(5, 5) == 10
 
 def test_calculator_subtract():
@@ -22,3 +24,7 @@ def test_calculator_multiply():
 
 def test_calculator_divide():
     assert Calculator.divide(5, 5) == 1
+
+def test_calculator_divideby0():
+    with pytest.raises(ValueError, match="Can't divide by 0"):
+        Calculator.divide(5, 0)
